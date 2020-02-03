@@ -1,7 +1,7 @@
 import React from 'react';
-import {weightFields, dimensionFields} from '../data';
+import { weightFields, dimensionFields } from '../data';
 
-const Record = ({filterWeight, filterDimension, item}) => {
+const Record = ({ filterWeight, filterDimension, item }) => {
   return (
     <>
       {Object.keys(item).map(field => {

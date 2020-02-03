@@ -11,7 +11,7 @@
   display: inline-block;
   max-width: 120px;
   transition: max-width 200ms, padding 200ms;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 #grid-anim .header {

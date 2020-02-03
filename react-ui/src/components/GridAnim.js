@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {data, weightFields, dimensionFields} from '../data';
+import { data, weightFields, dimensionFields } from '../data';
 import Record from './Record';
 import './GridAnim.css';
 import Button from './Button';

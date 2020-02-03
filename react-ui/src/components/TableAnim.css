@@ -24,7 +24,7 @@
 #table-anim .field-common {
   max-width: 120px;
   transition: max-width 200ms;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 #table-anim .hide-field {
