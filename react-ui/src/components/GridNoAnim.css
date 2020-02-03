@@ -4,6 +4,7 @@
   overflow-x: auto;
   grid-template-columns: repeat(28, 120px);
   height: 220px;
+  table-layout: fixed;
 }
 
 #grid-no-anim .header {

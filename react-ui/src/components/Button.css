@@ -1,0 +1,9 @@
+button {
+  padding: 10px;
+  border: none;
+  font-size: 1rem;
+}
+
+button.filter-active {
+  background-color: rgb(96, 233, 125);
+}

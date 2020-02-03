@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { data, weightFields, dimensionFields } from '../data';
+import Button from './Button';
+
 import './TableAnim.css';
 
 const TableAnim = () => {
@@ -19,8 +21,9 @@ const TableAnim = () => {
   return (
     <div className="example" id="table-anim">
       <h3>Table Animation</h3>
-      <button onClick={onClickFilterWeight}>Filter Weight</button>
-      <button onClick={onClickFilterDimension}>Filter Dimension</button>
+      <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
+      <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
+      <div className="scroll">
       <table>
         <thead>
         <tr>
@@ -92,6 +95,7 @@ const TableAnim = () => {
         })}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

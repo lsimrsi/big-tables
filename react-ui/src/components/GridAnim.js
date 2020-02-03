@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {data, weightFields, dimensionFields} from '../data';
 import Record from './Record';
 import './GridAnim.css';
+import Button from './Button';
 
 const GridAnim = () => {
   const [filterWeight, filterWeightSet] = useState(false);
@@ -20,8 +21,8 @@ const GridAnim = () => {
   return (
     <div className="example" id="grid-anim">
       <h3>Grid Animation</h3>
-      <button onClick={onClickFilterWeight}>Filter Weight</button>
-      <button onClick={onClickFilterDimension}>Filter Dimension</button>
+      <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
+      <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
       <div className="table">
         {Object.keys(data[0]).map(item => {
           let capped = capitalizeFirstLetters(item);

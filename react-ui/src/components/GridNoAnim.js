@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {data, weightFields, dimensionFields} from '../data';
 import Record from './Record';
+import Button from './Button';
 import './GridNoAnim.css';
 
 const GridNoAnim = () => {
@@ -40,8 +41,8 @@ const GridNoAnim = () => {
   return (
     <div className="example" id="grid-no-anim">
       <h3>Grid No Animation</h3>
-      <button onClick={onClickFilterWeight}>Filter Weight</button>
-      <button onClick={onClickFilterDimension}>Filter Dimension</button>
+      <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
+      <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
       <div className="table" style={gridStyle} onMouseOver={onMouseOverTable}>
         {Object.keys(refinedData[0]).map(item => {
           let capped = capitalizeFirstLetters(item);

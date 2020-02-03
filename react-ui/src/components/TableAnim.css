@@ -1,7 +1,11 @@
+#table-anim .scroll {
+  overflow-x: scroll;
+  max-width: 100%;
+}
+
 #table-anim table {
   border: none;
   border-collapse: collapse;
-  max-width: 100%;
   height: 150px;
 }
 
@@ -13,7 +17,7 @@
 }
 
 #table-anim td, #table-anim th {
-  padding: 4px;
+  padding: 8px;
   border: 2px solid rgba(0, 0, 0, 0.212);
 }
 
