@@ -18,7 +18,8 @@ const GridAnim = () => {
   }
 
   return (
-    <div className="example" id="table-anim">
+    <div className="example" id="grid-anim">
+      <h3>Grid Animation</h3>
       <button onClick={onClickFilterWeight}>Filter Weight</button>
       <button onClick={onClickFilterDimension}>Filter Dimension</button>
       <div className="table">

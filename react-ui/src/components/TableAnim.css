@@ -1,0 +1,36 @@
+#table-anim table {
+  border: none;
+  border-collapse: collapse;
+  max-width: 100%;
+  height: 150px;
+}
+
+#table-anim th {
+  text-align: left;
+  vertical-align: top;
+  background-color: #009662;
+  color: white;
+}
+
+#table-anim td, #table-anim th {
+  padding: 4px;
+  border: 2px solid rgba(0, 0, 0, 0.212);
+}
+
+#table-anim .field-common {
+  max-width: 120px;
+  transition: max-width 200ms;
+  overflow:hidden;
+}
+
+#table-anim .hide-field {
+  max-width: 0px;
+}
+
+#table-anim td.hide-field {
+  color: white;
+}
+
+#table-anim th.hide-field {
+  color: #009662;
+}

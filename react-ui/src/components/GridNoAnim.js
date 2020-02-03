@@ -38,7 +38,8 @@ const GridNoAnim = () => {
     gridTemplateColumns: `repeat(${Object.keys(refinedData[0]).length}, 120px)`
   }
   return (
-    <div className="example" id="table-no-anim">
+    <div className="example" id="grid-no-anim">
+      <h3>Grid No Animation</h3>
       <button onClick={onClickFilterWeight}>Filter Weight</button>
       <button onClick={onClickFilterDimension}>Filter Dimension</button>
       <div className="table" style={gridStyle} onMouseOver={onMouseOverTable}>

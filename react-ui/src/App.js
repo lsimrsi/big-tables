@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import GridNoAnim from './components/GridNoAnim';
 import GridAnim from './components/GridAnim';
+import TableAnim from './components/TableAnim';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       </header>
       <GridNoAnim />
       <GridAnim />
+      <TableAnim />
     </div>
   );
 }

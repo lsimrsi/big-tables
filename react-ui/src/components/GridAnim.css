@@ -1,12 +1,12 @@
-#table-anim .table {
+#grid-anim .table {
   display: grid;
   max-width: 100%;
   overflow-x: auto;
   grid-template-columns: repeat(28, min-content);
-  grid-template-rows: repeat(auto-fill, 1fr);
+  height: 220px;
 }
 
-#table-anim .field-common {
+#grid-anim .field-common {
   box-sizing: border-box;
   display: inline-block;
   max-width: 120px;
@@ -14,17 +14,17 @@
   overflow:hidden;
 }
 
-#table-anim .header {
+#grid-anim .header {
   padding: 4px 8px;
   background-color: #009662;
   color: white;
 }
 
-#table-anim .field {
+#grid-anim .field {
   padding: 8px;
 }
 
-#table-anim .hide-field {
-  max-width: 0;
+#grid-anim .hide-field {
+  max-width: 0px;
   padding: 0;
 }
