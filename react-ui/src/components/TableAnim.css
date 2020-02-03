@@ -1,0 +1,30 @@
+#table-anim .table {
+  display: grid;
+  max-width: 100%;
+  overflow-x: auto;
+  grid-template-columns: repeat(28, min-content);
+  grid-template-rows: repeat(auto-fill, 1fr);
+}
+
+#table-anim .field-common {
+  box-sizing: border-box;
+  display: inline-block;
+  max-width: 120px;
+  transition: max-width 200ms, padding 200ms;
+  overflow:hidden;
+}
+
+#table-anim .header {
+  padding: 4px 8px;
+  background-color: #009662;
+  color: white;
+}
+
+#table-anim .field {
+  padding: 8px;
+}
+
+#table-anim .hide-field {
+  max-width: 0;
+  padding: 0;
+}

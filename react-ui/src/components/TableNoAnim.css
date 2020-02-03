@@ -1,0 +1,19 @@
+#table-no-anim .table {
+  display: grid;
+  max-width: 100%;
+  overflow-x: auto;
+  grid-template-columns: repeat(28, 120px);
+  grid-template-rows: 1fr;
+}
+
+#table-no-anim .header {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #009662;
+  color: white;
+}
+
+#table-no-anim .field {
+  display: inline-block;
+  padding: 8px;
+}

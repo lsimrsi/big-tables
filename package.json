@@ -1,0 +1,12 @@
+{
+  "name": "big-table",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ui": "cd react-ui && yarn start"
+  },
+  "author": "",
+  "license": "ISC"
+}
