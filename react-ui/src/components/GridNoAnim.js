@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {data, weightFields, dimensionFields} from '../data';
 import Record from './Record';
-import './TableNoAnim.css';
+import './GridNoAnim.css';
 
-const TableNoAnim = () => {
+const GridNoAnim = () => {
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
 
@@ -54,7 +54,7 @@ const TableNoAnim = () => {
   )
 }
 
-export default TableNoAnim;
+export default GridNoAnim;
 
 function capitalizeFirstLetters(word) {
   let words = word.split('_');

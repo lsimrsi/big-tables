@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {data, weightFields, dimensionFields} from '../data';
 import Record from './Record';
-import './TableAnim.css';
+import './GridAnim.css';
 
-const TableAnim = () => {
+const GridAnim = () => {
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
 
@@ -24,8 +24,8 @@ const TableAnim = () => {
       <div className="table">
         {Object.keys(data[0]).map(item => {
           let capped = capitalizeFirstLetters(item);
-
           let hide = "";
+
           let foundWeightField = false;
           for (let i = 0; i < weightFields.length; i++) {
             if (item === weightFields[i] && filterWeight) {
@@ -57,7 +57,7 @@ const TableAnim = () => {
   )
 }
 
-export default TableAnim;
+export default GridAnim;
 
 function capitalizeFirstLetters(word) {
   let words = word.split('_');
