@@ -1,0 +1,42 @@
+#window-table .window {
+  max-width: 1000px;
+  overflow-x: auto;
+  transition: max-width 200ms;
+  border: 5px solid rgb(212, 212, 212);
+}
+
+#window-table table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  transition: transform 200ms;
+}
+
+#window-table th {
+  position: sticky;
+  top: 0;
+  text-align: left;
+  vertical-align: top;
+  background-color: #009662;
+  color: white;
+  border: 1px solid rgb(255, 0, 0);
+  background-clip: padding-box;
+}
+
+#window-table td, #window-table th {
+  box-sizing: border-box;
+  padding: 4px;
+  max-width: 120px;
+  width: 120px;
+  border: 1px solid rgba(0, 0, 0, 0.212);
+}
+
+#window-table tr:hover {
+  background-color: #eee;
+}
+
+#window-table .field-common {
+  max-width: 120px;
+  width: 120px;
+  overflow: hidden;
+}

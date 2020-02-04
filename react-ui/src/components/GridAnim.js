@@ -34,7 +34,7 @@ const GridAnim = () => {
           return <div className={`header field-common ${hide}`}><span key={item}>{capped}</span></div>
         })}
         {data.map((item, i) => {
-          if (i > 20) return;
+          if (i > 20) return <></>;
           return <Record filterDimension={filterDimension} filterWeight={filterWeight} key={i} item={item} />
         })}
       </div>

@@ -1,31 +1,37 @@
 import React, { useState } from 'react';
 import { data } from '../data';
-import { isFieldVisible } from '../utils/common';
+import { isFieldVisible, getKeyPosition } from '../utils/common';
 import Button from './Button';
 
-import './TableAnim.css';
+import './WindowTable.css';
 
-const TableAnim = () => {
+const WindowTable = () => {
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
 
   const onClickFilterWeight = () => {
     filterWeightSet(!filterWeight);
-    filterDimensionSet(false);
   }
 
   const onClickFilterDimension = () => {
     filterDimensionSet(!filterDimension);
-    filterWeightSet(false);
   }
 
+  let tableStyle = {};
+  let winProps = getKeyPosition(filterWeight, filterDimension);
+  tableStyle.transform = `translateX(${winProps.tableTranslate})`;
+  let windowStyle = {};
+  windowStyle.maxWidth = winProps.windowWidth;
+  windowStyle.overflowX = winProps.overflowX;
+  windowStyle.borderColor = winProps.borderColor;
+
   return (
-    <div className="example" id="table-anim">
-      <h3>Table Animation</h3>
+    <div className="example" id="window-table">
+      <h3>Window Table</h3>
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
-      <div className="scroll">
-        <table cellspacing="0" cellpadding="0">
+      <div className="window" style={windowStyle}>
+        <table style={tableStyle} cellSpacing="0" cellPadding="0">
           <thead>
             <tr>
               {Object.keys(data[0]).map(field => {
@@ -38,14 +44,13 @@ const TableAnim = () => {
           </thead>
           <tbody>
             {data.map((item, i) => {
-              if (i > 20) return <></>;
               return (
                 <tr key={i}>
                   {Object.keys(item).map(field => {
                     let isVisible = isFieldVisible(field, filterWeight, filterDimension);
                     let hide = isVisible ? "" : "hide-field";
                     return (
-                      <td key={"" + field + ":" + item[field]} className={"field-common " + hide}>
+                  <td key={"" + field + ":" + item[field]} className={"field-common " + hide}>
                         {item[field]}
                       </td>
                     )
@@ -60,7 +65,7 @@ const TableAnim = () => {
   )
 }
 
-export default TableAnim;
+export default WindowTable;
 
 function capitalizeFirstLetters(word) {
   let words = word.split('_');
