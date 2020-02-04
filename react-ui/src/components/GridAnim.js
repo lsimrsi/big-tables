@@ -17,12 +17,16 @@ const GridAnim = () => {
     filterDimensionSet(!filterDimension);
   }
 
+  let gridColumns = {
+    gridTemplateColumns: `repeat(${Object.keys(data[0]).length}, max-content)`
+  }
+
   return (
     <div className="example" id="grid-anim">
       <h3>Grid Animation</h3>
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
-      <div className="table">
+      <div className="table" style={gridColumns}>
         {Object.keys(data[0]).map(item => {
           let capped = capitalizeFirstLetters(item);
           let isVisible = isVisibleField(item, filterWeight, filterDimension);

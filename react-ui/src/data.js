@@ -1,6 +1,6 @@
 exports.data = [
   {
-    riduculously_long_field_name_riduculously_long_field_name: "1",
+    status_code: "1",
     mechanical_designation: "T",
     equipment_type_code: "T104",
     rule_83_car_kind: "T",

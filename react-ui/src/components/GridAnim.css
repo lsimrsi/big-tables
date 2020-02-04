@@ -2,6 +2,7 @@
   display: grid;
   max-width: 100%;
   overflow-x: scroll;
+  /* overriden in code */
   grid-template-columns: repeat(28, max-content);
   grid-template-rows: 80px repeat(auto-fill, 40px);
 }
