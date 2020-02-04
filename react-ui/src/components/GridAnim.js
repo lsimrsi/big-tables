@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { data, weightFields, dimensionFields } from '../data';
+import { data } from '../data';
 import Record from './Record';
 import './GridAnim.css';
 import Button from './Button';
+import {isVisibleField} from '../utils/common';
 
 const GridAnim = () => {
   const [filterWeight, filterWeightSet] = useState(false);
@@ -10,12 +11,10 @@ const GridAnim = () => {
 
   const onClickFilterWeight = () => {
     filterWeightSet(!filterWeight);
-    filterDimensionSet(false);
   }
 
   const onClickFilterDimension = () => {
     filterDimensionSet(!filterDimension);
-    filterWeightSet(false);
   }
 
   return (
@@ -26,30 +25,9 @@ const GridAnim = () => {
       <div className="table">
         {Object.keys(data[0]).map(item => {
           let capped = capitalizeFirstLetters(item);
-          let hide = "";
-
-          let foundWeightField = false;
-          for (let i = 0; i < weightFields.length; i++) {
-            if (item === weightFields[i] && filterWeight) {
-              foundWeightField = true;
-              break;
-            }
-          }
-          if (!foundWeightField && filterWeight) {
-            hide = "hide-field";
-          }
-
-          let foundDimensionField = false;
-          for (let i = 0; i < dimensionFields.length; i++) {
-            if (item === dimensionFields[i] && filterDimension) {
-              foundDimensionField = true;
-              break;
-            }
-          }
-          if (!foundDimensionField && filterDimension) {
-            hide = "hide-field";
-          }
-          return <span className={`field-common header ${hide}`} key={item}>{capped}</span>
+          let isVisible = isVisibleField(item, filterWeight, filterDimension);
+          let hide = isVisible ? "" : "hide-field";
+          return <div className={`header field-common ${hide}`}><span key={item}>{capped}</span></div>
         })}
         {data.map((item, i) => {
           return <Record filterDimension={filterDimension} filterWeight={filterWeight} key={i} item={item} />

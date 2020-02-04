@@ -52,7 +52,7 @@ const TableAnim = () => {
                 if (!foundDimensionField && filterDimension) {
                   hide = "hide-field";
                 }
-                return <th className={`field-common header ${hide}`} key={item}>{capped}</th>
+                return <th className={`field-common ${hide}`} key={item}>{capped}</th>
               })}
             </tr>
           </thead>
