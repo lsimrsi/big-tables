@@ -3,9 +3,9 @@ import { data } from '../data';
 import { isFieldVisible } from '../utils/common';
 import Button from './Button';
 
-import './TableAnim.css';
+import './StickyTable.css';
 
-const TableAnim = () => {
+const StickyTable = () => {
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
 
@@ -20,8 +20,8 @@ const TableAnim = () => {
   }
 
   return (
-    <div className="example" id="table-anim">
-      <h3>Table Animation</h3>
+    <div className="example" id="sticky-table">
+      <h3>Sticky Table</h3>
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
       <div className="scroll">
@@ -38,7 +38,6 @@ const TableAnim = () => {
           </thead>
           <tbody>
             {data.map((item, i) => {
-              if (i > 20) return;
               return (
                 <tr key={i}>
                   {Object.keys(item).map(field => {
@@ -60,7 +59,7 @@ const TableAnim = () => {
   )
 }
 
-export default TableAnim;
+export default StickyTable;
 
 function capitalizeFirstLetters(word) {
   let words = word.split('_');

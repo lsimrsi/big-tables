@@ -3,6 +3,7 @@ import './App.css';
 import GridNoAnim from './components/GridNoAnim';
 import GridAnim from './components/GridAnim';
 import TableAnim from './components/TableAnim';
+import StickyTable from './components/StickyTable';
 
 function App() {
   return (
@@ -10,8 +11,9 @@ function App() {
       <header className="App-header">
       </header>
       {/* <GridNoAnim /> */}
-      <GridAnim />
-      <TableAnim />
+      {/* <GridAnim /> */}
+      {/* <TableAnim /> */}
+      <StickyTable />
     </div>
   );
 }
