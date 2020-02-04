@@ -1,6 +1,6 @@
 import { weightFields, dimensionFields } from '../data';
 
-export const isVisibleField = (field, filterWeight, filterDimension) => {
+export const isFieldVisible = (field, filterWeight, filterDimension) => {
   // if no filters are selected, all fields are visible
   if (!filterWeight && !filterDimension) {
     return true;

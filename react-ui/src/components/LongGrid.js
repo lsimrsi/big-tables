@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { data } from '../data';
 import Record from './Record';
-import './GridAnim.css';
+import './LongGrid.css';
 import Button from './Button';
-import { isFieldVisible } from '../utils/common';
+import {isFieldVisible} from '../utils/common';
 
-const GridAnim = () => {
+const LongGrid = () => {
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
 
@@ -22,7 +22,7 @@ const GridAnim = () => {
   }
 
   return (
-    <div className="example" id="grid-anim">
+    <div className="example" id="long-grid">
       <h3>Grid Animation</h3>
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
@@ -34,7 +34,6 @@ const GridAnim = () => {
           return <div className={`header field-common ${hide}`}><span key={item}>{capped}</span></div>
         })}
         {data.map((item, i) => {
-          if (i > 20) return;
           return <Record filterDimension={filterDimension} filterWeight={filterWeight} key={i} item={item} />
         })}
       </div>
@@ -42,7 +41,7 @@ const GridAnim = () => {
   )
 }
 
-export default GridAnim;
+export default LongGrid;
 
 function capitalizeFirstLetters(word) {
   let words = word.split('_');
