@@ -31,7 +31,7 @@ const WindowTable = () => {
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
       <div className="window" style={windowStyle}>
-        <table style={tableStyle} cellSpacing="0" cellPadding="0">
+        <table style={tableStyle}>
           <thead>
             <tr>
               {Object.keys(data[0]).map(field => {
