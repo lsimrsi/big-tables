@@ -3,6 +3,7 @@
   overflow-x: auto;
   transition: max-width 200ms;
   border: 5px solid rgb(212, 212, 212);
+  /* height: 50vh; */
 }
 
 #window-table table {

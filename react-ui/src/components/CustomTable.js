@@ -3,9 +3,9 @@ import { data } from '../data';
 import { isFieldVisible } from '../utils/common';
 import Button from './Button';
 
-import './WindowTable.css';
+import './CustomTable.css';
 
-const WindowTable = () => {
+const CustomTable = () => {
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
 
@@ -65,7 +65,7 @@ const WindowTable = () => {
   )
 }
 
-export default WindowTable;
+export default CustomTable;
 
 function capitalizeFirstLetters(word) {
   let words = word.split('_');
@@ -76,6 +76,7 @@ function capitalizeFirstLetters(word) {
   }
   return cappedWords.join(" ");
 }
+
 
 const getKeyPosition = (filterWeight, filterDimension) => {
   let obj = {};

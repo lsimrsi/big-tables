@@ -8,5 +8,8 @@
     "ui": "set PORT=3002 && cd react-ui && yarn start"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "normalize.min.css": "^8.0.1"
+  }
 }

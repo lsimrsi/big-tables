@@ -1,4 +1,5 @@
 import React from 'react';
+import 'normalize.min.css';
 import './App.css';
 import GridNoAnim from './components/GridNoAnim';
 import GridAnim from './components/GridAnim';
