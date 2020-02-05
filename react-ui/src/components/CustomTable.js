@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { data } from '../data';
 import { isFieldVisible } from '../utils/common';
 import Button from './Button';
@@ -8,6 +8,25 @@ import './CustomTable.css';
 const CustomTable = () => {
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
+  const [keys, keysSet] = useState(Object.keys(data[0]));
+  const [headers, headersSet] = useState([]);
+  const [isDragging, isDraggingSet] = useState(false);
+  const [draggedHeader, draggedHeaderSet] = useState(null);
+
+  useEffect(() => {
+    const constructTableHeaders = () => {
+      let headers = keys.map((key, index) => {
+        return {
+          key,
+          name: capitalizeFirstLetters(key),
+          position: index,
+          width: 120,
+        }
+      });
+      headersSet(headers);
+    }
+    constructTableHeaders();
+  }, []);
 
   const onClickFilterWeight = () => {
     filterWeightSet(!filterWeight);
@@ -17,28 +36,55 @@ const CustomTable = () => {
     filterDimensionSet(!filterDimension);
   }
 
+  const onMouseDownDrag = (header) => {
+    isDraggingSet(true);
+    draggedHeaderSet(header);
+  }
+
+  const onMouseUpDrag = (header) => {
+    if (!draggedHeader) return;
+    // swap position
+    let headerPosition = header.position;
+    header.position = draggedHeader.position;
+    draggedHeader.position = headerPosition;
+
+    // sort the array
+    let newHeaders = headers.sort((a, b) => a.position > b.position);
+    headersSet([...newHeaders]);
+  }
+
   let tableStyle = {};
-  let winProps = getKeyPosition(filterWeight, filterDimension);
-  tableStyle.transform = `translateX(${winProps.tableTranslate})`;
+  // let winProps = getKeyPosition(filterWeight, filterDimension);
+  // tableStyle.transform = `translateX(${winProps.tableTranslate})`;
   let windowStyle = {};
-  windowStyle.maxWidth = winProps.windowWidth;
-  windowStyle.overflowX = winProps.overflowX;
-  windowStyle.borderColor = winProps.borderColor;
+  // windowStyle.maxWidth = winProps.windowWidth;
+  // windowStyle.overflowX = winProps.overflowX;
+  // windowStyle.borderColor = winProps.borderColor;
 
   return (
-    <div className="example" id="window-table">
-      <h3>Window Table</h3>
+    <div className="example" id="custom-table">
+      <h3>Custom Table</h3>
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
       <div className="window" style={windowStyle}>
         <table style={tableStyle}>
           <thead>
             <tr>
-              {Object.keys(data[0]).map(field => {
-                let capped = capitalizeFirstLetters(field);
-                let isVisible = isFieldVisible(field, filterWeight, filterDimension);
+              {headers.map(header => {
+                let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
                 let hide = isVisible ? "" : "hide-field";
-                return <th className={`field-common ${hide}`} key={field}>{capped}</th>
+                let widthPx = header.width + "px";
+                let thStyle = {
+                  width: widthPx,
+                  maxWidth: widthPx,
+                }
+                return <th
+                  onMouseDown={() => onMouseDownDrag(header)}
+                  onMouseUp={() => onMouseUpDrag(header)}
+                  style={thStyle}
+                  className={`field-common ${hide}`}
+                  key={header.key}>
+                    {header.name}</th>
               })}
             </tr>
           </thead>
@@ -46,12 +92,12 @@ const CustomTable = () => {
             {data.map((item, i) => {
               return (
                 <tr key={i}>
-                  {Object.keys(item).map(field => {
-                    let isVisible = isFieldVisible(field, filterWeight, filterDimension);
+                  {headers.map(header => {
+                    let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
                     let hide = isVisible ? "" : "hide-field";
                     return (
-                  <td key={"" + field + ":" + item[field]} className={"field-common " + hide}>
-                        {item[field]}
+                  <td key={"" + header.key + ":" + item[header.key]} className={"field-common " + hide}>
+                        {item[header.key]}
                       </td>
                     )
                   })}

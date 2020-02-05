@@ -6,6 +6,7 @@ import GridAnim from './components/GridAnim';
 import TableAnim from './components/TableAnim';
 import StickyTable from './components/StickyTable';
 import WindowTable from './components/WindowTable';
+import CustomTable from './components/CustomTable';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       {/* <GridAnim /> */}
       {/* <TableAnim /> */}
       {/* <StickyTable /> */}
-      <WindowTable />
+      {/* <WindowTable /> */}
+      <CustomTable />
     </div>
   );
 }

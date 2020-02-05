@@ -1,0 +1,26 @@
+#custom-table table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+#custom-table thead {
+  user-select: none;
+}
+#custom-table th, #custom-table td {
+  padding: 8px;
+}
+#custom-table th {
+  font-weight: normal;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid rgba(0, 0, 0, 0.233);
+}
+#custom-table td {
+  border-right: 1px solid rgba(0, 0, 0, 0.233);
+}
+#custom-table td:first-child {
+  border-left: 1px solid rgba(0, 0, 0, 0.233);
+}
+#custom-table tbody tr:hover {
+  background-color: #eee;
+}
