@@ -15,6 +15,15 @@
   vertical-align: top;
   border: 1px solid rgba(0, 0, 0, 0.233);
 }
+#custom-table th:hover {
+  cursor: move;
+}
+#custom-table th.drag {
+  background-color: #eee;
+}
+#custom-table th.drag-target {
+  background-color: #ccc;
+}
 #custom-table td {
   border-right: 1px solid rgba(0, 0, 0, 0.233);
 }
