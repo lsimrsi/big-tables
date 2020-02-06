@@ -6,19 +6,26 @@ import Button from './Button';
 import './CustomTable.css';
 
 const CustomTable = () => {
+  const tableRef = React.createRef();
+  const theadRef = React.createRef();
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
   const [keys, keysSet] = useState(Object.keys(data[0]));
   const [headers, headersSet] = useState([]);
-  const [draggedHeader, draggedHeaderSet] = useState(null);
+  const [draggedHeader, draggedHeaderSet] = useState({
+    key: "",
+    name: "",
+    width: 120,
+  });
+  const [headerPos, headerPosSet] = useState({ x: 0, y: 0 });
+  const [theadHeight, theadHeightSet] = useState(0);
 
   useEffect(() => {
     const constructTableHeaders = () => {
-      let headers = keys.map((key, index) => {
+      let headers = keys.map((key) => {
         return {
           key,
           name: capitalizeFirstLetters(key),
-          position: index,
           width: 120,
         }
       });
@@ -35,16 +42,23 @@ const CustomTable = () => {
     filterDimensionSet(!filterDimension);
   }
 
-  const onMouseDownHeader = (header) => {
+
+  const onMouseUpHeader = (e) => {
+    // let rect = e.target.getBoundingClientRect();
+    // headerPosSet({ x: rect.left, y: rect.top });
+    draggedHeaderSet({
+      key: "",
+      name: "",
+      width: 120,
+    });
+  }
+
+  const onMouseDownHeader = (e, header) => {
     draggedHeaderSet(header);
   }
 
-  const onMouseUpCustomTable = () => {
-    draggedHeaderSet(null);
-  }
-
-  const onMouseOverDrag = (header) => {
-    if (!draggedHeader) return;
+  const onMouseOverHeader = (e, header) => {
+    if (!draggedHeader.key) return;
     let toIndex = headers.findIndex(hdr => header.key === hdr.key);
     let fromIndex = headers.findIndex(hdr => draggedHeader.key === hdr.key);
 
@@ -52,22 +66,43 @@ const CustomTable = () => {
     headersSet([...headers]);
   }
 
+  const onMouseMoveHeader = (e) => {
+    let tableBounds = tableRef.current.getBoundingClientRect();
+    let theadBounds = theadRef.current.getBoundingClientRect();
+    let padding = 20;
+    let x = (e.clientX + padding) - (draggedHeader.width / 2) - padding;
+    let y = tableBounds.y;
+    headerPosSet({ x, y });
+    theadHeightSet(theadBounds.height);
+  }
+
   let tableStyle = {};
-  // let winProps = getKeyPosition(filterWeight, filterDimension);
-  // tableStyle.transform = `translateX(${winProps.tableTranslate})`;
+  let winProps = getKeyPosition(filterWeight, filterDimension);
+  tableStyle.transform = `translateX(${winProps.tableTranslate})`;
   let windowStyle = {};
-  // windowStyle.maxWidth = winProps.windowWidth;
-  // windowStyle.overflowX = winProps.overflowX;
-  // windowStyle.borderColor = winProps.borderColor;
+  windowStyle.maxWidth = winProps.windowWidth;
+  windowStyle.overflowX = winProps.overflowX;
+  windowStyle.borderColor = winProps.borderColor;
+
+  let absStyle = {};
+  absStyle.left = headerPos.x + "px";
+  absStyle.top = headerPos.y + "px";
+  absStyle.width = draggedHeader.width + "px";
+  absStyle.height = theadHeight;
+  absStyle.maxHeight = theadHeight;
+  if (draggedHeader.key) {
+    absStyle.opacity = 1;
+  }
 
   return (
-    <div onMouseUp={onMouseUpCustomTable} className="example" id="custom-table">
+    <div className="example" id="custom-table">
       <h3>Custom Table</h3>
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
       <div className="window" style={windowStyle}>
-        <table style={tableStyle}>
-          <thead>
+        <div className="abs-header" style={absStyle}>{draggedHeader.name}</div>
+        <table ref={tableRef} style={tableStyle} onMouseMove={onMouseMoveHeader}>
+          <thead ref={theadRef}>
             <tr>
               {headers.map(header => {
                 let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
@@ -79,32 +114,33 @@ const CustomTable = () => {
                 }
 
                 let drag = "";
-                if (draggedHeader !== null && draggedHeader.key === header.key) {
+                if (draggedHeader.key === header.key) {
                   drag = "drag";
                 }
-                else if (draggedHeader !== null && draggedHeader.key) {
+                else if (draggedHeader.key) {
                   drag = "drag-target";
                 }
                 return <th
-                  onMouseDown={() => onMouseDownHeader(header)}
-                  // onMouseUp={() => onMouseUpDrag(header)}
-                  onMouseOver={() => onMouseOverDrag(header)}
+                  onMouseDown={(e) => onMouseDownHeader(e, header)}
+                  onMouseOver={(e) => onMouseOverHeader(e, header)}
+                  onMouseUp={onMouseUpHeader} 
                   style={thStyle}
                   className={`field-common ${hide} ${drag}`}
                   key={header.key}>
-                    {header.name}</th>
+                  {header.name}</th>
               })}
             </tr>
           </thead>
           <tbody>
             {data.map((item, i) => {
+              if (i > 10) return;
               return (
                 <tr key={i}>
                   {headers.map(header => {
                     let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
                     let hide = isVisible ? "" : "hide-field";
                     return (
-                  <td key={"" + header.key + ":" + item[header.key]} className={"field-common " + hide}>
+                      <td key={"" + header.key + ":" + item[header.key]} className={"field-common " + hide}>
                         {item[header.key]}
                       </td>
                     )
