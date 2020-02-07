@@ -8,6 +8,7 @@ import './CustomTable.css';
 const CustomTable = () => {
   const tableRef = React.createRef();
   const theadRef = React.createRef();
+  const windowRef = React.createRef();
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
   const [keys, keysSet] = useState(Object.keys(data[0]));
@@ -19,6 +20,7 @@ const CustomTable = () => {
   });
   const [headerPos, headerPosSet] = useState({ x: 0, y: 0 });
   const [theadHeight, theadHeightSet] = useState(0);
+  const [scrollInterval, scrollIntervalSet] = useState(0);
 
   useEffect(() => {
     const constructTableHeaders = () => {
@@ -42,10 +44,10 @@ const CustomTable = () => {
     filterDimensionSet(!filterDimension);
   }
 
-
-  const onMouseUpHeader = (e) => {
+  const onMouseUpCustomTable = () => {
     // let rect = e.target.getBoundingClientRect();
     // headerPosSet({ x: rect.left, y: rect.top });
+    clearInterval(scrollInterval);
     draggedHeaderSet({
       key: "",
       name: "",
@@ -53,11 +55,11 @@ const CustomTable = () => {
     });
   }
 
-  const onMouseDownHeader = (e, header) => {
+  const onMouseDownHeader = (header) => {
     draggedHeaderSet(header);
   }
 
-  const onMouseOverHeader = (e, header) => {
+  const onMouseOverHeader = (header) => {
     if (!draggedHeader.key) return;
     let toIndex = headers.findIndex(hdr => header.key === hdr.key);
     let fromIndex = headers.findIndex(hdr => draggedHeader.key === hdr.key);
@@ -76,31 +78,60 @@ const CustomTable = () => {
     theadHeightSet(theadBounds.height);
   }
 
+  const onMouseOverPanelStyle = (isRightPanel) => {
+    if (!windowRef.current) return;
+    if (!draggedHeader.key) return;
+    let wnRef = windowRef.current;
+    let amt = 1000/60;
+    let left = isRightPanel ? amt/2 : -amt/2;
+
+    scrollIntervalSet(setInterval(() => wnRef.scrollBy({
+      left,
+      behavior: 'auto'
+    }), amt));
+  }
+  const onMouseOutPanelStyle = () => {
+    clearInterval(scrollInterval);
+  }
+
   let tableStyle = {};
   let winProps = getKeyPosition(filterWeight, filterDimension);
-  tableStyle.transform = `translateX(${winProps.tableTranslate})`;
+  // tableStyle.transform = `translateX(${winProps.tableTranslate})`;
   let windowStyle = {};
-  windowStyle.maxWidth = winProps.windowWidth;
-  windowStyle.overflowX = winProps.overflowX;
-  windowStyle.borderColor = winProps.borderColor;
+  // windowStyle.maxWidth = winProps.windowWidth;
+  // windowStyle.overflowX = winProps.overflowX;
+  // windowStyle.borderColor = winProps.borderColor;
 
   let absStyle = {};
-  absStyle.left = headerPos.x + "px";
-  absStyle.top = headerPos.y + "px";
-  absStyle.width = draggedHeader.width + "px";
-  absStyle.height = theadHeight;
-  absStyle.maxHeight = theadHeight;
+  // absStyle.left = headerPos.x + "px";
+  // absStyle.top = headerPos.y + "px";
+  // absStyle.width = draggedHeader.width + "px";
+  // absStyle.height = theadHeight;
+  // absStyle.maxHeight = theadHeight;
+
+  let panelStyle = {};
   if (draggedHeader.key) {
-    absStyle.opacity = 1;
+    panelStyle.display = "initial";
+    // absStyle.opacity = 1;
   }
 
   return (
-    <div className="example" id="custom-table">
+    <div onMouseUp={onMouseUpCustomTable} className="example" id="custom-table">
       <h3>Custom Table</h3>
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
-      <div className="window" style={windowStyle}>
+      <div className="window" style={windowStyle} ref={windowRef}>
         <div className="abs-header" style={absStyle}>{draggedHeader.name}</div>
+        <div
+          className="panel-left panel"
+          style={panelStyle}
+          onMouseOver={() => onMouseOverPanelStyle(false)}
+          onMouseOut={onMouseOutPanelStyle}/>
+        <div
+          className="panel-right panel"
+          style={panelStyle}
+          onMouseOver={() => onMouseOverPanelStyle(true)}
+          onMouseOut={onMouseOutPanelStyle}/>
         <table ref={tableRef} style={tableStyle} onMouseMove={onMouseMoveHeader}>
           <thead ref={theadRef}>
             <tr>
@@ -110,37 +141,32 @@ const CustomTable = () => {
                 let widthPx = header.width + "px";
                 let thStyle = {
                   width: widthPx,
-                  maxWidth: widthPx,
                 }
 
                 let drag = "";
                 if (draggedHeader.key === header.key) {
                   drag = "drag";
                 }
-                else if (draggedHeader.key) {
-                  drag = "drag-target";
-                }
                 return <th
-                  onMouseDown={(e) => onMouseDownHeader(e, header)}
-                  onMouseOver={(e) => onMouseOverHeader(e, header)}
-                  onMouseUp={onMouseUpHeader} 
+                  key={header.key}
+                  onMouseDown={() => onMouseDownHeader(header)}
+                  onMouseOver={() => onMouseOverHeader(header)}
                   style={thStyle}
-                  className={`field-common ${hide} ${drag}`}
-                  key={header.key}>
-                  {header.name}</th>
+                  className={`${hide} ${drag}`}
+                >{header.name}</th>
               })}
             </tr>
           </thead>
           <tbody>
             {data.map((item, i) => {
-              if (i > 10) return;
+              if (i > 20) return;
               return (
                 <tr key={i}>
                   {headers.map(header => {
                     let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
                     let hide = isVisible ? "" : "hide-field";
                     return (
-                      <td key={"" + header.key + ":" + item[header.key]} className={"field-common " + hide}>
+                      <td key={"" + header.key + ":" + item[header.key]} className={"" + hide}>
                         {item[header.key]}
                       </td>
                     )
