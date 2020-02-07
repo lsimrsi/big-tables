@@ -1,17 +1,13 @@
-#custom-table .window {
-  position: relative;
-  overflow-x: auto;
-  border: 5px solid black;
-  width: 100%;
-  max-width: 100%;
-}
 #custom-table table {
+  display: block;
   border-collapse: collapse;
   table-layout: fixed;
-  width: 700px;
-  max-width: 700px;
+  width: 100%;
+  overflow: auto;
 }
 #custom-table thead {
+  border: none;
+  outline: none;
   background-color: var(--gbr-green);
   color: white;
   user-select: none;
@@ -26,6 +22,9 @@
   vertical-align: top;
   border: 1px solid rgba(0, 0, 0, 0.233);
   transition: background-color 100ms;
+}
+#custom-table th {
+  min-width: 120px;
 }
 #custom-table th:hover {
   cursor: move;

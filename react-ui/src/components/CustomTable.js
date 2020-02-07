@@ -8,7 +8,6 @@ import './CustomTable.css';
 const CustomTable = () => {
   const tableRef = React.createRef();
   const theadRef = React.createRef();
-  const windowRef = React.createRef();
   const [filterWeight, filterWeightSet] = useState(false);
   const [filterDimension, filterDimensionSet] = useState(false);
   const [keys, keysSet] = useState(Object.keys(data[0]));
@@ -21,6 +20,9 @@ const CustomTable = () => {
   const [headerPos, headerPosSet] = useState({ x: 0, y: 0 });
   const [theadHeight, theadHeightSet] = useState(0);
   const [scrollInterval, scrollIntervalSet] = useState(0);
+  const [tableStyle, tableStyleSet] = useState({});
+  const padding = 20;
+  const interval = 1000 / 60;
 
   useEffect(() => {
     const constructTableHeaders = () => {
@@ -35,6 +37,20 @@ const CustomTable = () => {
     }
     constructTableHeaders();
   }, []);
+
+  useEffect(() => {
+    if (tableRef.current) {
+      let tableStyle = {};
+      let tbl = tableRef.current;
+      setTimeout(() => {
+        tbl.scrollTo({left: styles.tableScroll, y: 0, behavior: "smooth"});
+      }, 50)
+      let styles = getStylesFromFilters(filterWeight, filterDimension);
+      // tableRef.current.scrollTo({left: styles.tableScroll, y: 0, behavior: "smooth"});
+      tableStyle.width = styles.tableWidth;
+      tableStyleSet(tableStyle);
+    }
+  }, [filterWeight, filterDimension]);
 
   const onClickFilterWeight = () => {
     filterWeightSet(!filterWeight);
@@ -71,7 +87,6 @@ const CustomTable = () => {
   const onMouseMoveHeader = (e) => {
     let tableBounds = tableRef.current.getBoundingClientRect();
     let theadBounds = theadRef.current.getBoundingClientRect();
-    let padding = 20;
     let x = (e.clientX + padding) - (draggedHeader.width / 2) - padding;
     let y = tableBounds.y;
     headerPosSet({ x, y });
@@ -79,28 +94,19 @@ const CustomTable = () => {
   }
 
   const onMouseOverPanelStyle = (isRightPanel) => {
-    if (!windowRef.current) return;
+    if (!tableRef) return;
     if (!draggedHeader.key) return;
-    let wnRef = windowRef.current;
-    let amt = 1000/60;
-    let left = isRightPanel ? amt/2 : -amt/2;
+    let tblRef = tableRef.current;
+    let left = isRightPanel ? draggedHeader.width / 8 : -draggedHeader.width / 8;
 
-    scrollIntervalSet(setInterval(() => wnRef.scrollBy({
+    scrollIntervalSet(setInterval(() => tblRef.scrollBy({
       left,
       behavior: 'auto'
-    }), amt));
+    }), interval));
   }
   const onMouseOutPanelStyle = () => {
     clearInterval(scrollInterval);
   }
-
-  let tableStyle = {};
-  let winProps = getKeyPosition(filterWeight, filterDimension);
-  // tableStyle.transform = `translateX(${winProps.tableTranslate})`;
-  let windowStyle = {};
-  // windowStyle.maxWidth = winProps.windowWidth;
-  // windowStyle.overflowX = winProps.overflowX;
-  // windowStyle.borderColor = winProps.borderColor;
 
   let absStyle = {};
   // absStyle.left = headerPos.x + "px";
@@ -120,63 +126,61 @@ const CustomTable = () => {
       <h3>Custom Table</h3>
       <Button active={filterWeight} onClick={onClickFilterWeight}>Filter Weight</Button>
       <Button active={filterDimension} onClick={onClickFilterDimension}>Filter Dimension</Button>
-      <div className="window" style={windowStyle} ref={windowRef}>
-        <div className="abs-header" style={absStyle}>{draggedHeader.name}</div>
-        <div
-          className="panel-left panel"
-          style={panelStyle}
-          onMouseOver={() => onMouseOverPanelStyle(false)}
-          onMouseOut={onMouseOutPanelStyle}/>
-        <div
-          className="panel-right panel"
-          style={panelStyle}
-          onMouseOver={() => onMouseOverPanelStyle(true)}
-          onMouseOut={onMouseOutPanelStyle}/>
-        <table ref={tableRef} style={tableStyle} onMouseMove={onMouseMoveHeader}>
-          <thead ref={theadRef}>
-            <tr>
-              {headers.map(header => {
-                let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
-                let hide = isVisible ? "" : "hide-field";
-                let widthPx = header.width + "px";
-                let thStyle = {
-                  width: widthPx,
-                }
+      <div className="abs-header" style={absStyle}>{draggedHeader.name}</div>
+      <div
+        className="panel-left panel"
+        style={panelStyle}
+        onMouseOver={() => onMouseOverPanelStyle(false)}
+        onMouseOut={onMouseOutPanelStyle} />
+      <div
+        className="panel-right panel"
+        style={panelStyle}
+        onMouseOver={() => onMouseOverPanelStyle(true)}
+        onMouseOut={onMouseOutPanelStyle} />
+      <table ref={tableRef} style={tableStyle} onMouseMove={onMouseMoveHeader}>
+        <thead ref={theadRef}>
+          <tr>
+            {headers.map(header => {
+              let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
+              let hide = isVisible ? "" : "hide-field";
+              let widthPx = header.width + "px";
+              let thStyle = {
+                width: widthPx,
+              }
 
-                let drag = "";
-                if (draggedHeader.key === header.key) {
-                  drag = "drag";
-                }
-                return <th
-                  key={header.key}
-                  onMouseDown={() => onMouseDownHeader(header)}
-                  onMouseOver={() => onMouseOverHeader(header)}
-                  style={thStyle}
-                  className={`${hide} ${drag}`}
-                >{header.name}</th>
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, i) => {
-              if (i > 20) return;
-              return (
-                <tr key={i}>
-                  {headers.map(header => {
-                    let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
-                    let hide = isVisible ? "" : "hide-field";
-                    return (
-                      <td key={"" + header.key + ":" + item[header.key]} className={"" + hide}>
-                        {item[header.key]}
-                      </td>
-                    )
-                  })}
-                </tr>
-              )
+              let drag = "";
+              if (draggedHeader.key === header.key) {
+                drag = "drag";
+              }
+              return <th
+                key={header.key}
+                onMouseDown={() => onMouseDownHeader(header)}
+                onMouseOver={() => onMouseOverHeader(header)}
+                style={thStyle}
+                className={`${hide} ${drag}`}
+              >{header.name}</th>
             })}
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, i) => {
+            // if (i > 20) return;
+            return (
+              <tr key={i}>
+                {headers.map(header => {
+                  let isVisible = isFieldVisible(header.key, filterWeight, filterDimension);
+                  let hide = isVisible ? "" : "hide-field";
+                  return (
+                    <td key={"" + header.key + ":" + item[header.key]} className={"" + hide}>
+                      {item[header.key]}
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </div>
   )
 }
@@ -194,28 +198,25 @@ function capitalizeFirstLetters(word) {
 }
 
 
-const getKeyPosition = (filterWeight, filterDimension) => {
-  let obj = {};
-  obj.windowWidth = "100%";
-  obj.tableTranslate = "0px";
-  obj.overflowX = "auto";
-  obj.borderColor = "#eee";
+const getStylesFromFilters = (filterWeight, filterDimension) => {
+  let styles = {};
+  styles.tableWidth = "100%";
+  styles.tableScroll = 0;
+  styles.borderColor = "#eee";
 
   if (!filterWeight && !filterDimension) {
-    return obj;
+    return styles;
   }
 
-  obj.overflowX = "auto";
-  obj.borderColor = "#60e97d";
+  styles.borderColor = "#60e97d";
 
   let count = 0;
   if (filterWeight && filterDimension) {
     for (let key in data[0]) {
       if (key === "gross_rail_load_weight") {
-        obj.tableTranslate = (-count * 120) + "px";
-        obj.windowWidth = (120 * 12) + "px";
-        obj.overflowX = "auto";
-        return obj;
+        styles.tableScroll = (count * 120);
+        styles.tableWidth = "100%";
+        return styles;
       }
       count++;
     }
@@ -225,9 +226,9 @@ const getKeyPosition = (filterWeight, filterDimension) => {
   if (filterWeight) {
     for (let key in data[0]) {
       if (key === "gross_rail_load_weight") {
-        obj.tableTranslate = (-count * 120) + "px";
-        obj.windowWidth = (120 * 6) + "px";
-        return obj;
+        styles.tableScroll = (count * 120);
+        styles.tableWidth = (120 * 6) + "px";
+        return styles;
       }
       count++;
     }
@@ -236,9 +237,9 @@ const getKeyPosition = (filterWeight, filterDimension) => {
   if (filterDimension) {
     for (let key in data[0]) {
       if (key === "plate_code") {
-        obj.tableTranslate = (-count * 120) + "px";
-        obj.windowWidth = (120 * 6) + "px";
-        return obj;
+        styles.tableScroll = (count * 120);
+        styles.tableWidth = (120 * 6) + "px";
+        return styles;
       }
       count++;
     }
