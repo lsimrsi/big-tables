@@ -164,7 +164,7 @@ const CustomTable = () => {
         </thead>
         <tbody>
           {data.map((item, i) => {
-            // if (i > 20) return;
+            if (i > 20) return;
             return (
               <tr key={i}>
                 {headers.map(header => {

@@ -4,10 +4,9 @@
   table-layout: fixed;
   width: 100%;
   overflow: auto;
+  height: 50vh;
 }
 #custom-table thead {
-  border: none;
-  outline: none;
   background-color: var(--gbr-green);
   color: white;
   user-select: none;
@@ -24,9 +23,9 @@
   transition: background-color 100ms;
 }
 #custom-table th {
+  position: sticky;
+  top: 0;
   min-width: 120px;
-}
-#custom-table th:hover {
   cursor: move;
 }
 #custom-table th.drag {
@@ -57,7 +56,7 @@
 }
 #custom-table .panel {
   position: fixed;
-  z-index: 900;
+  z-index: 999;
   top: 0;
   bottom: 0;
   width: 50px;

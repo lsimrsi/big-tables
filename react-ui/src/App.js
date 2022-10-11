@@ -13,11 +13,11 @@ function App() {
     <div className="App">
       <header className="App-header">
       </header>
-      {/* <GridNoAnim /> */}
-      {/* <GridAnim /> */}
-      {/* <TableAnim /> */}
-      {/* <StickyTable /> */}
-      {/* <WindowTable /> */}
+      <GridNoAnim />
+      <GridAnim />
+      <TableAnim />
+      <StickyTable />
+      <WindowTable />
       <CustomTable />
     </div>
   );
